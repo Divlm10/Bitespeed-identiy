@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
 
 router.post('/', async (req, res) => {
   const { email, phoneNumber } = req.body;
