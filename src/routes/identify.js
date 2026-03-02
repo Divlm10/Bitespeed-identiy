@@ -12,10 +12,32 @@ router.post('/', async (req, res) => {
   }
 
   try {
-    // We will implement logic here step-by-step
+    const result = await pool.query(
+      `SELECT * FROM contacts
+       WHERE email = $1 OR phoneNumber = $2
+       ORDER BY createdAt ASC`,
+      [email || null, phoneNumber || null]
+    );
+    const matches=result.rows;
+
+    // return res.json({matches});//test
+    if (matches.length === 0) {
+    const newContact = await pool.query(
+        `INSERT INTO contacts (email, phoneNumber, linkPrecedence)
+        VALUES ($1, $2, 'primary')
+        RETURNING *`,
+        [email || null, phoneNumber || null]
+    );
+
     return res.json({
-      message: "Endpoint working"
+        contact: {
+        primaryContactId: newContact.rows[0].id,
+        emails: email ? [email] : [],
+        phoneNumbers: phoneNumber ? [phoneNumber] : [],
+        secondaryContactIds: []
+        }
     });
+}
 
   } catch (error) {
     console.error(error);
