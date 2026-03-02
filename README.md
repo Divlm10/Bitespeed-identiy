@@ -1,13 +1,21 @@
-# Bitespeed Identity Service
+## Live Endpoint
 
-Node.js + Express + PostgreSQL service to consolidate customer contacts.
+POST https://bitespeed-identiy.onrender.com/identify
 
-## Endpoint
+### Example Request
 
-POST /identify
-
-Body:
 {
-  "email": "string",
-  "phoneNumber": "string"
+  "email": "test@test.com",
+  "phoneNumber": "123456"
+}
+
+### Example Response
+
+{
+  "contact": {
+    "primaryContactId": 1,
+    "emails": ["test@test.com"],
+    "phoneNumbers": ["123456"],
+    "secondaryContactIds": []
+  }
 }
